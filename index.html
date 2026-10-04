@@ -1,63 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Coin Cap Casino</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Neon Royale</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;background:#070914;color:#f5f7ff;
+ margin:0;
+ background:#07080d;
+ color:#fff;
  font-family:Arial,sans-serif
 }
 .app{
- max-width:720px;margin:auto;min-height:100vh;
- background:radial-gradient(circle at 50% 0,#172047 0,#090c18 42%,#05060d 100%);
- padding-bottom:78px
+ max-width:720px;
+ margin:auto;
+ min-height:100vh;
+ background:radial-gradient(circle at 50% -10%,#32145f,#0b0c15 42%,#06070b);
+ padding-bottom:88px
 }
-.top{
- padding:18px;display:flex;align-items:center;
- justify-content:space-between;position:sticky;top:0;
- background:rgba(7,9,20,.9);backdrop-filter:blur(12px);z-index:5
+header{
+ padding:18px 16px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center
 }
-.brand{display:flex;align-items:center;gap:11px}
-.logo{
- width:48px;height:48px;border-radius:15px;
- background:linear-gradient(135deg,#19e6ff,#6d4aff);
- display:grid;place-items:center;font-size:27px;font-weight:900
+.brand{
+ display:flex;
+ gap:10px;
+ align-items:center
 }
-.brand b{font-size:20px}
-.brand small{display:block;color:#8992ad;margin-top:3px}
-
+.crown{
+ width:45px;
+ height:45px;
+ border-radius:14px;
+ background:linear-gradient(135deg,#ffcf4a,#ff6b9d);
+ display:grid;
+ place-items:center;
+ font-size:24px
+}
+.brand b{font-size:19px}
+.brand small{
+ display:block;
+ color:#8d91a5;
+ font-size:10px;
+ letter-spacing:1.5px;
+ margin-top:3px
+}
+.user{
+ width:40px;
+ height:40px;
+ border:1px solid #3b3454;
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ background:#151320
+}
+.hero{
+ margin:4px 16px 16px;
+ padding:22px;
+ border:1px solid #3b2757;
+ border-radius:24px;
+ background:linear-gradient(135deg,#21143a,#111321);
+ position:relative;
+ overflow:hidden
+}
+.hero:after{
+ content:"";
+ position:absolute;
+ width:150px;
+ height:150px;
+ border-radius:50%;
+ right:-60px;
+ top:-60px;
+ background:#ffcf4a22
+}
+.kicker{
+ color:#ffcf4a;
+ font-size:11px;
+ letter-spacing:2px
+}
+.hero h1{
+ font-size:29px;
+ margin:7px 0
+}
+.hero p{
+ color:#999db2;
+ font-size:13px;
+ margin:0 0 17px
+}
 .balance{
- margin:10px 16px 18px;padding:20px;
- border:1px solid #29345b;border-radius:22px;
- background:linear-gradient(135deg,#101832,#0c1021)
+ font-size:27px;
+ font-weight:800
 }
-.balance span{color:#8792b2;font-size:13px}
-.balance h1{margin:6px 0 0;font-size:34px}
-.ccm{color:#19e6ff;font-size:14px}
-
-.banner{
- margin:0 16px 18px;padding:18px;border-radius:22px;
- background:linear-gradient(135deg,#1b1240,#102e45);
- border:1px solid #3b4b85
-}
-.banner h2{margin:0 0 6px}
-.banner p{margin:0;color:#9da7c2;font-size:13px}
-
-.section{padding:0 16px}
-.title{
- display:flex;justify-content:space-between;
- align-items:center;margin:16px 0 12px
-}
-.title h2{margin:0;font-size:19px}
-.title small{color:#7f89a6}
-
-.games{
- display:grid;grid-template-columns:1fr 1fr;gap:12px
-}
-.game{
- border:1
+.balance
