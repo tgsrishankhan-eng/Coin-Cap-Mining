@@ -1,151 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coin Cap Mining</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coin Cap Mining</title>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+body{
+margin:0;
+background:#07130b;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+.box{
+max-width:450px;
+margin:auto;
+padding:25px 15px;
+}
+.logo{
+width:80px;
+height:80px;
+margin:auto;
+border-radius:50%;
+background:#13c237;
+color:#07130b;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:38px;
+font-weight:bold;
+}
+.card{
+background:#0d2114;
+border:1px solid #21472a;
+border-radius:18px;
+padding:20px;
+margin-top:18px;
+}
+.balance{
+font-size:35px;
+color:#31e65d;
+font-weight:bold;
+margin:15px;
+}
+button{
+width:100%;
+padding:15px;
+margin-top:12px;
+border:0;
+border-radius:12px;
+background:#13c237;
+font-size:17px;
+font-weight:bold;
+}
+</style>
+</head>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<body>
 
-    body {
-      background: #07130b;
-      color: white;
-      min-height: 100vh;
-    }
+<div class="box">
 
-    .app {
-      max-width: 480px;
-      margin: auto;
-      padding: 18px;
-      padding-bottom: 90px;
-    }
+<div class="logo">C</div>
 
-    .header {
-      text-align: center;
-      padding: 15px 0 25px;
-    }
+<h1>COIN CAP MINING</h1>
+<p>Mine • Earn • Grow</p>
 
-    .logo {
-      width: 80px;
-      height: 80px;
-      margin: auto;
-      border-radius: 50%;
-      background: #13c237;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 35px;
-      font-weight: bold;
-      color: #07130b;
-      box-shadow: 0 0 25px rgba(19,194,55,.5);
-    }
+<div class="card">
 
-    h1 {
-      margin-top: 12px;
-      font-size: 25px;
-    }
+<p>Your Balance</p>
 
-    .sub {
-      color: #8fa895;
-      margin-top: 5px;
-      font-size: 14px;
-    }
+<div class="balance" id="balance">0.00</div>
 
-    .card {
-      background: #0d2114;
-      border: 1px solid #183b22;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 15px;
-    }
+<p>CCM Coins</p>
 
-    .balance-title {
-      color: #8fa895;
-      font-size: 14px;
-    }
+<button onclick="startMining()" id="btn">
+START MINING
+</button>
 
-    .balance {
-      font-size: 34px;
-      font-weight: bold;
-      color: #31e65d;
-      margin: 8px 0;
-    }
+<p id="status">Mining Stopped</p>
 
-    .coin {
-      font-size: 14px;
-      color: #9db5a3;
-    }
+</div>
 
-    .mining-box {
-      text-align: center;
-    }
+<div class="card">
 
-    .status {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
+<button onclick="alert('Wallet coming soon')">
+💰 WALLET
+</button>
 
-    .rate {
-      color: #8fa895;
-      margin-bottom: 18px;
-    }
+<button onclick="alert('Referral coming soon')">
+👥 REFERRAL
+</button>
 
-    .mine-btn {
-      width: 100%;
-      border: none;
-      padding: 16px;
-      border-radius: 14px;
-      background: #13c237;
-      color: #061008;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+<button onclick="alert('Profile coming soon')">
+👤 PROFILE
+</button>
 
-    .mine-btn.stop {
-      background: #e64b4b;
-      color: white;
-    }
+</div>
 
-    .progress {
-      height: 8px;
-      background: #18301f;
-      border-radius: 20px;
-      overflow: hidden;
-      margin-top: 18px;
-    }
+</div>
 
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #13c237;
-      transition: width .3s;
-    }
+<script>
 
-    .menu {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+let balance=0;
+let mining=false;
+let timer;
 
-    .menu button {
-      padding: 16px 10px;
-      border: 1px solid #21472a;
-      background: #102719;
-      color: white;
-      border-radius: 14px;
-      font-size: 15px;
-      cursor: pointer;
-    }
+function startMining(){
 
-    .menu button:hover {
-      background
+if(mining){
+
+mining=false;
+clearInterval(timer);
+
+document.getElementById("btn").innerText="START MINING";
+document.getElementById("status").innerText="Mining Stopped";
+
+}else{
+
+mining=true;
+
+document.getElementById("btn").innerText="STOP MINING";
+document.getElementById("status").innerText="⛏ Mining Active";
+
+timer=setInterval(function(){
+
+balance += 12.5/3600;
+
+document.getElementById("balance").innerText=
+balance.toFixed(2);
+
+},1000);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
