@@ -1,5 +1,102 @@
 <!doctype html>
+<<!doctype html>
 <html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Neon Royale</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#07080d;
+ color:#fff;
+ font-family:Arial,sans-serif
+}
+.app{
+ max-width:720px;
+ margin:auto;
+ min-height:100vh;
+ background:radial-gradient(circle at 50% -10%,#32145f,#0b0c15 42%,#06070b);
+ padding-bottom:88px
+}
+header{
+ padding:18px 16px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center
+}
+.brand{
+ display:flex;
+ gap:10px;
+ align-items:center
+}
+.crown{
+ width:45px;
+ height:45px;
+ border-radius:14px;
+ background:linear-gradient(135deg,#ffcf4a,#ff6b9d);
+ display:grid;
+ place-items:center;
+ font-size:24px
+}
+.brand b{font-size:19px}
+.brand small{
+ display:block;
+ color:#8d91a5;
+ font-size:10px;
+ letter-spacing:1.5px;
+ margin-top:3px
+}
+.user{
+ width:40px;
+ height:40px;
+ border:1px solid #3b3454;
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ background:#151320
+}
+.hero{
+ margin:4px 16px 16px;
+ padding:22px;
+ border:1px solid #3b2757;
+ border-radius:24px;
+ background:linear-gradient(135deg,#21143a,#111321);
+ position:relative;
+ overflow:hidden
+}
+.hero:after{
+ content:"";
+ position:absolute;
+ width:150px;
+ height:150px;
+ border-radius:50%;
+ right:-60px;
+ top:-60px;
+ background:#ffcf4a22
+}
+.kicker{
+ color:#ffcf4a;
+ font-size:11px;
+ letter-spacing:2px
+}
+.hero h1{
+ font-size:29px;
+ margin:7px 0
+}
+.hero p{
+ color:#999db2;
+ font-size:13px;
+ margin:0 0 17px
+}
+.balance{
+ font-size:27px;
+ font-weight:800
+}
+.balance lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
