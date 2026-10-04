@@ -1,23 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Coin Cap Mining</title>
 
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <style>
+
+*{
+box-sizing:border-box;
+}
+
 body{
 margin:0;
 background:#07130b;
 color:white;
-font-family:Arial;
-text-align:center;
+font-family:Arial,sans-serif;
 }
-.box{
-max-width:450px;
+
+.app{
+max-width:480px;
 margin:auto;
-padding:25px 15px;
+padding:20px 15px 90px;
 }
+
 .logo{
 width:80px;
 height:80px;
@@ -30,111 +39,626 @@ align-items:center;
 justify-content:center;
 font-size:38px;
 font-weight:bold;
+box-shadow:0 0 25px #13c23755;
 }
+
+header{
+text-align:center;
+padding:10px 0 20px;
+}
+
+header h1{
+margin:12px 0 5px;
+font-size:24px;
+}
+
+header p{
+color:#8fa895;
+}
+
 .card{
 background:#0d2114;
 border:1px solid #21472a;
 border-radius:18px;
 padding:20px;
-margin-top:18px;
+margin-top:15px;
 }
+
+.title{
+color:#8fa895;
+font-size:14px;
+}
+
 .balance{
-font-size:35px;
-color:#31e65d;
+font-size:36px;
 font-weight:bold;
-margin:15px;
+color:#31e65d;
+margin:8px 0;
 }
+
+.status{
+text-align:center;
+font-size:18px;
+font-weight:bold;
+margin:10px;
+}
+
+.rate{
+text-align:center;
+color:#8fa895;
+margin-bottom:15px;
+}
+
 button{
 width:100%;
-padding:15px;
-margin-top:12px;
+padding:14px;
+margin-top:10px;
 border:0;
 border-radius:12px;
 background:#13c237;
-font-size:17px;
+color:#061008;
+font-size:16px;
 font-weight:bold;
 }
+
+.stop{
+background:#e64b4b;
+color:white;
+}
+
+.dark{
+background:#18301f;
+color:white;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+input{
+width:100%;
+padding:13px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #285635;
+background:#07130b;
+color:white;
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+.note{
+font-size:13px;
+color:#8fa895;
+line-height:1.6;
+}
+
+.bottom{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+max-width:480px;
+margin:auto;
+background:#0b1b10;
+border-top:1px solid #21472a;
+display:flex;
+justify-content:space-around;
+padding:8px;
+}
+
+.bottom button{
+background:none;
+color:#9db5a3;
+font-size:12px;
+padding:5px;
+margin:0;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="app">
+
+<header>
 
 <div class="logo">C</div>
 
 <h1>COIN CAP MINING</h1>
+
 <p>Mine • Earn • Grow</p>
+
+</header>
+
+
+<!-- HOME -->
+
+<div id="home" class="page active">
 
 <div class="card">
 
-<p>Your Balance</p>
+<div class="title">Your Balance</div>
 
-<div class="balance" id="balance">0.00</div>
+<div id="balance" class="balance">
+0.00
+</div>
 
-<p>CCM Coins</p>
+<div class="title">
+CCM Coins
+</div>
 
-<button onclick="startMining()" id="btn">
+</div>
+
+
+<div class="card">
+
+<div id="status" class="status">
+Mining Stopped
+</div>
+
+<div class="rate">
+Mining Rate: 12.5 CCM / hour
+</div>
+
+<button id="mineButton" onclick="toggleMining()">
 START MINING
 </button>
 
-<p id="status">Mining Stopped</p>
+<p id="timer" class="note" style="text-align:center;">
+Mining Time: 00:00:00
+</p>
 
 </div>
+
 
 <div class="card">
 
-<button onclick="alert('Wallet coming soon')">
-💰 WALLET
+<div class="grid">
+
+<button onclick="showPage('wallet')">
+💰 Wallet
 </button>
 
-<button onclick="alert('Referral coming soon')">
-👥 REFERRAL
+<button onclick="showPage('transfer')">
+📤 Transfer
 </button>
 
-<button onclick="alert('Profile coming soon')">
-👤 PROFILE
+<button onclick="showPage('referral')">
+👥 Referral
+</button>
+
+<button onclick="showPage('profile')">
+👤 Profile
 </button>
 
 </div>
 
 </div>
+
+</div>
+
+
+<!-- WALLET -->
+
+<div id="wallet" class="page">
+
+<div class="card">
+
+<h2>💰 Wallet</h2>
+
+<div id="walletBalance" class="balance">
+0.00
+</div>
+
+<p class="note">
+Available CCM Coins
+</p>
+
+<button onclick="withdraw()">
+WITHDRAW
+</button>
+
+<button class="dark" onclick="showPage('home')">
+← BACK
+</button>
+
+</div>
+
+</div>
+
+
+<!-- TRANSFER -->
+
+<div id="transfer" class="page">
+
+<div class="card">
+
+<h2>📤 Transfer</h2>
+
+<input
+id="receiver"
+placeholder="Telegram User ID"
+>
+
+<input
+id="amount"
+type="number"
+placeholder="Amount"
+>
+
+<button onclick="transferCoins()">
+SEND COINS
+</button>
+
+<button class="dark" onclick="showPage('home')">
+← BACK
+</button>
+
+</div>
+
+</div>
+
+
+<!-- REFERRAL -->
+
+<div id="referral" class="page">
+
+<div class="card">
+
+<h2>👥 Referral</h2>
+
+<p class="note">
+Invite your friends to Coin Cap Mining.
+</p>
+
+<input
+id="referralLink"
+readonly
+value="Open from Telegram"
+>
+
+<button onclick="copyReferral()">
+COPY REFERRAL LINK
+</button>
+
+<button class="dark" onclick="showPage('home')">
+← BACK
+</button>
+
+</div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div id="profile" class="page">
+
+<div class="card">
+
+<h2>👤 Profile</h2>
+
+<p class="note">
+Name:
+</p>
+
+<p id="userName">
+Guest
+</p>
+
+<p class="note">
+Telegram ID:
+</p>
+
+<p id="userId">
+Not available
+</p>
+
+<button class="dark" onclick="showPage('home')">
+← BACK
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BOTTOM -->
+
+<div class="bottom">
+
+<button onclick="showPage('home')">
+🏠<br>Home
+</button>
+
+<button onclick="showPage('wallet')">
+💰<br>Wallet
+</button>
+
+<button onclick="showPage('referral')">
+👥<br>Referral
+</button>
+
+<button onclick="showPage('profile')">
+👤<br>Profile
+</button>
+
+</div>
+
 
 <script>
 
-let balance=0;
-let mining=false;
-let timer;
+let balance = 0;
 
-function startMining(){
+let mining = false;
+
+let miningTimer = null;
+
+let miningSeconds = 0;
+
+const miningRate = 12.5;
+
+
+/* UPDATE BALANCE */
+
+function updateBalance(){
+
+document.getElementById("balance").innerText =
+balance.toFixed(2);
+
+document.getElementById("walletBalance").innerText =
+balance.toFixed(2);
+
+}
+
+
+/* MINING */
+
+function toggleMining(){
 
 if(mining){
 
-mining=false;
-clearInterval(timer);
+mining = false;
 
-document.getElementById("btn").innerText="START MINING";
-document.getElementById("status").innerText="Mining Stopped";
+clearInterval(miningTimer);
 
-}else{
+document.getElementById("mineButton").innerText =
+"START MINING";
 
-mining=true;
+document.getElementById("mineButton").classList.remove("stop");
 
-document.getElementById("btn").innerText="STOP MINING";
-document.getElementById("status").innerText="⛏ Mining Active";
+document.getElementById("status").innerText =
+"Mining Stopped";
 
-timer=setInterval(function(){
+return;
 
-balance += 12.5/3600;
+}
 
-document.getElementById("balance").innerText=
-balance.toFixed(2);
+
+mining = true;
+
+document.getElementById("mineButton").innerText =
+"STOP MINING";
+
+document.getElementById("mineButton").classList.add("stop");
+
+document.getElementById("status").innerText =
+"⛏ Mining Active";
+
+
+miningTimer = setInterval(function(){
+
+balance += miningRate / 3600;
+
+miningSeconds++;
+
+updateBalance();
+
+updateTimer();
 
 },1000);
 
 }
 
+
+/* TIMER */
+
+function updateTimer(){
+
+let hours =
+Math.floor(miningSeconds / 3600);
+
+let minutes =
+Math.floor((miningSeconds % 3600) / 60);
+
+let seconds =
+miningSeconds % 60;
+
+hours = String(hours).padStart(2,"0");
+
+minutes = String(minutes).padStart(2,"0");
+
+seconds = String(seconds).padStart(2,"0");
+
+document.getElementById("timer").innerText =
+"Mining Time: " +
+hours + ":" +
+minutes + ":" +
+seconds;
+
 }
+
+
+/* PAGE */
+
+function showPage(page){
+
+document.querySelectorAll(".page")
+.forEach(function(item){
+
+item.classList.remove("active");
+
+});
+
+document.getElementById(page)
+.classList.add("active");
+
+}
+
+
+/* TRANSFER */
+
+function transferCoins(){
+
+let receiver =
+document.getElementById("receiver").value;
+
+let amount =
+Number(document.getElementById("amount").value);
+
+
+if(!receiver){
+
+alert("Telegram User ID দিন");
+
+return;
+
+}
+
+
+if(!amount || amount <= 0){
+
+alert("সঠিক Amount দিন");
+
+return;
+
+}
+
+
+if(amount > balance){
+
+alert("আপনার Balance কম");
+
+return;
+
+}
+
+
+balance -= amount;
+
+updateBalance();
+
+alert("Demo transfer successful!");
+
+document.getElementById("receiver").value = "";
+
+document.getElementById("amount").value = "";
+
+}
+
+
+/* WITHDRAW */
+
+function withdraw(){
+
+alert(
+"Withdrawal এখনো চালু হয়নি। Backend connect করার পর চালু হবে।"
+);
+
+}
+
+
+/* REFERRAL */
+
+function copyReferral(){
+
+let input =
+document.getElementById("referralLink");
+
+input.select();
+
+navigator.clipboard.writeText(input.value)
+
+.then(function(){
+
+alert("Referral link copied!");
+
+})
+
+.catch(function(){
+
+alert("Copy করা যায়নি");
+
+});
+
+}
+
+
+/* TELEGRAM USER */
+
+function loadTelegramUser(){
+
+if(
+window.Telegram &&
+window.Telegram.WebApp
+){
+
+let tg =
+window.Telegram.WebApp;
+
+tg.ready();
+
+tg.expand();
+
+let user =
+tg.initDataUnsafe.user;
+
+
+if(user){
+
+let name =
+(user.first_name || "") +
+(user.last_name ?
+" " + user.last_name :
+"");
+
+document.getElementById("userName")
+.innerText =
+name || "Telegram User";
+
+
+document.getElementById("userId")
+.innerText =
+user.id;
+
+
+document.getElementById("referralLink")
+.value =
+"https://t.me/YOUR_BOT_USERNAME?start=" +
+user.id;
+
+}
+
+}
+
+}
+
+
+updateBalance();
+
+loadTelegramUser();
 
 </script>
 
