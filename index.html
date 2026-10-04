@@ -1,117 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>CoinMine</title>
+<title>Coin Cap Mining</title>
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <style>
-:root{--bg:#03110d;--card:#071b15;--card2:#0a241b;--green:#00f08a;--text:#f2fff9;--muted:#86a69b;--red:#ff5570}
-*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 50% -10%,#075d3c 0,#03110d 40%);font-family:Inter,system-ui,Arial;color:var(--text)}
-.app{max-width:480px;margin:auto;min-height:100vh;padding:18px 14px 92px}
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.brand{font-weight:900;font-size:24px}.brand span{color:var(--green)}
-.icon{width:38px;height:38px;border:1px solid #164f3a;border-radius:12px;background:#061811;color:#fff}
-.card{background:linear-gradient(145deg,#0a261d,#061811);border:1px solid #12613f;border-radius:18px;padding:16px;box-shadow:0 8px 30px #0008;margin-bottom:14px}
-.balance-label,.muted{color:var(--muted);font-size:12px}.balance{font-size:32px;font-weight:900;margin:5px 0}.coin{color:#ffc933}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#061711;border:1px solid #124733;border-radius:12px;padding:10px}.stat b{display:block;font-size:15px;margin-top:3px}
-.mine{text-align:center;padding:22px}.ring{width:170px;height:170px;border-radius:50%;margin:8px auto 18px;border:7px solid #0d5037;box-shadow:0 0 35px #00f08a44,inset 0 0 30px #00f08a22;display:flex;align-items:center;justify-content:center;flex-direction:column}.pick{font-size:45px}.rate{color:var(--green);font-weight:800}
-button{border:0;border-radius:13px;padding:13px 16px;font-weight:800;cursor:pointer}.primary{width:100%;background:linear-gradient(90deg,#00d878,#00f08a);color:#001b11}.secondary{background:#0b2a20;color:#dffff1;border:1px solid #1b6146}
-.row{display:flex;gap:8px}.row>*{flex:1}
-input{width:100%;padding:13px;border-radius:12px;border:1px solid #164e3a;background:#04140f;color:white;outline:none;margin:7px 0}
-.section-title{font-size:15px;font-weight:800;margin:18px 2px 9px}
-.item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #12372b}.item:last-child{border:0}.plus{color:var(--green)}.minus{color:var(--red)}
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);background:#04130eeb;backdrop-filter:blur(14px);border-top:1px solid #154735;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:10}.nav button{background:none;color:#75978b;padding:7px 2px;font-size:11px}.nav button.active{color:var(--green)}.nav i{display:block;font-size:19px;font-style:normal;margin-bottom:3px}
-.hidden{display:none!important}.badge{background:#073e2a;color:#66ffbd;padding:5px 8px;border-radius:9px;font-size:11px}.avatar{width:54px;height:54px;border-radius:50%;background:#0b3c2b;display:flex;align-items:center;justify-content:center;font-size:24px}
-.notice{font-size:11px;color:#91b0a4;line-height:1.5}.danger{background:#45151e;color:#ff9aac;border:1px solid #702535}
-</style>
-</head>
-<body>
-<div class="app">
-  <div class="top"><div class="brand">Coin<span>Mine</span></div><button class="icon" onclick="show('settings')">⚙️</button></div>
-
-  <section id="home">
-    <div class="card">
-      <div class="balance-label">TOTAL BALANCE</div>
-      <div class="balance"><span id="bal">0.00</span> <span class="coin">🪙</span></div>
-      <div class="grid">
-        <div class="stat"><small class="muted">Today Mined</small><b id="today">0.00</b></div>
-        <div class="stat"><small class="muted">Total Mined</small><b id="total">0.00</b></div>
-        <div class="stat"><small class="muted">Level</small><b id="level">1</b></div>
-      </div>
-    </div>
-    <div class="card mine">
-      <div class="ring"><div class="pick">⛏️</div><div class="rate" id="rate">12.50 / hour</div></div>
-      <div class="muted" id="status">Mining is stopped</div>
-      <div style="height:8px"></div><button class="primary" id="mineBtn" onclick="toggleMining()">START MINING</button>
-    </div>
-    <div class="card"><div class="section-title" style="margin-top:0">Invite Friends</div><div class="row"><button class="secondary" onclick="show('referral')">🎁 10% Bonus</button><button class="secondary" onclick="copyRef()">Copy Link</button></div></div>
-  </section>
-
-  <section id="wallet" class="hidden">
-    <div class="card"><div class="balance-label">WALLET BALANCE</div><div class="balance"><span id="bal2">0.00</span> 🪙</div></div>
-    <div class="grid">
-      <button class="secondary" onclick="toast('Deposit is disabled in this free virtual-coin version')">➕ Deposit</button>
-      <button class="secondary" onclick="toast('Withdraw is disabled in this free virtual-coin version')">↗️ Withdraw</button>
-      <button class="secondary" onclick="show('transfer')">🔄 Transfer</button>
-    </div>
-    <div class="section-title">Recent Transactions</div><div class="card" id="tx"></div>
-  </section>
-
-  <section id="transfer" class="hidden">
-    <div class="section-title">Transfer Coins</div>
-    <div class="card"><div class="muted">SEND TO</div><input id="to" placeholder="Telegram User ID / Wallet ID"><div class="muted">AMOUNT</div><input id="amount" type="number" min="0" step="0.01" placeholder="0.00"><div class="muted">NOTE</div><input id="note" placeholder="Optional message"><button class="primary" onclick="transfer()">TRANSFER</button></div>
-    <div class="notice">This prototype records transfers locally. A production version must validate transfers on a secure backend.</div>
-  </section>
-
-  <section id="referral" class="hidden">
-    <div class="card"><div class="section-title" style="margin-top:0">🎁 Referral Program</div><h2>Invite Friends & Get 10% Bonus</h2><p class="notice">Share your referral link. In the production version, referral rewards will be calculated by the server.</p><input id="ref" readonly><button class="primary" onclick="copyRef()">COPY REFERRAL LINK</button></div>
-  </section>
-
-  <section id="profile" class="hidden">
-    <div class="card"><div style="display:flex;gap:12px;align-items:center"><div class="avatar">👤</div><div><h3 id="username" style="margin:0">Guest Miner</h3><span class="badge" id="uid">Local User</span></div></div></div>
-    <div class="item"><span>Balance</span><b id="pb">0.00</b></div><div class="item"><span>Level</span><b id="pl">1</b></div><div class="item"><span>Referral Bonus</span><b>10%</b></div>
-  </section>
-
-  <section id="settings" class="hidden">
-    <div class="section-title">Settings</div>
-    <div class="card"><div class="item">🔔 Notifications <span class="badge">ON</span></div><div class="item">🌐 Language <span class="muted">English</span></div><div class="item">🔐 Security <span class="muted">Coming soon</span></div><div class="item">🎨 Theme <span class="muted">Dark</span></div></div>
-    <button class="danger" style="width:100%" onclick="resetData()">Reset demo data</button>
-  </section>
-</div>
-
-<nav class="nav">
- <button id="n-home" class="active" onclick="show('home',this)"><i>⌂</i>Home</button>
- <button id="n-mine" onclick="show('home',this);document.querySelector('.mine').scrollIntoView({behavior:'smooth'})"><i>⛏</i>Mining</button>
- <button id="n-wallet" onclick="show('wallet',this)"><i>▣</i>Wallet</button>
- <button id="n-transfer" onclick="show('transfer',this)"><i>⇄</i>Transfer</button>
- <button id="n-profile" onclick="show('profile',this)"><i>◉</i>Profile</button>
-</nav>
-
-<script>
-const tg=window.Telegram?.WebApp; if(tg){tg.ready();tg.expand();}
-const KEY='coinmine_demo_v1';
-let s=JSON.parse(localStorage.getItem(KEY)||'null')||{balance:2845.50,total:2845.50,today:125.60,level:12,mining:false,rate:12.5,started:0,tx:[{t:'Mining Reward',v:12.5},{t:'Referral Bonus',v:25}]};
-let timer;
-function save(){localStorage.setItem(KEY,JSON.stringify(s));render()}
-function render(){
- ['bal','bal2','pb'].forEach(x=>document.getElementById(x).textContent=s.balance.toFixed(2));
- document.getElementById('today').textContent=s.today.toFixed(2);document.getElementById('total').textContent=s.total.toFixed(2);
- document.getElementById('level').textContent=s.level;document.getElementById('pl').textContent=s.level;document.getElementById('rate').textContent=s.rate.toFixed(2)+' / hour';
- document.getElementById('status').textContent=s.mining?'Mining is active':'Mining is stopped';document.getElementById('mineBtn').textContent=s.mining?'STOP MINING':'START MINING';
- document.getElementById('username').textContent=tg?.initDataUnsafe?.user?.first_name?tg.initDataUnsafe.user.first_name+' '+(tg.initDataUnsafe.user.last_name||''):'Guest Miner';
- document.getElementById('uid').textContent=tg?.initDataUnsafe?.user?.id?'ID: '+tg.initDataUnsafe.user.id:'Local User';
- document.getElementById('ref').value='https://t.me/CoinMineBot?start=demo123';
- document.getElementById('tx').innerHTML=s.tx.slice(0,8).map(x=>`<div class="item"><span>${x.t}</span><b class="${x.v>=0?'plus':'minus'}">${x.v>=0?'+':''}${x.v.toFixed(2)} 🪙</b></div>`).join('');
+:root{
+--bg:#03110d;
+--card:#071b15;
+--card2:#0b251b;
+--green:#00f08a;
+--text:#f2fff9;
+--muted:#86a69b;
+--red:#ff5570;
 }
-function tick(){if(!s.mining)return;let now=Date.now();let hours=(now-s.started)/3600000;let gain=hours*s.rate;s.balance+=gain;s.today+=gain;s.total+=gain;s.started=now;save()}
-function toggleMining(){if(s.mining){tick();s.mining=false;clearInterval(timer);save()}else{s.mining=true;s.started=Date.now();timer=setInterval(tick,10000);save()}}
-function transfer(){let to=document.getElementById('to').value.trim(), a=parseFloat(document.getElementById('amount').value);if(!to||!a||a<=0)return toast('Enter a valid recipient and amount');if(a>s.balance)return toast('Insufficient balance');s.balance-=a;s.tx.unshift({t:'Transfer to '+to,v:-a});save();toast('Transfer recorded in demo mode');}
-function show(id,btn){document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');window.scrollTo(0,0)}
-function copyRef(){navigator.clipboard?.writeText(document.getElementById('ref').value);toast('Referral link copied')}
-function toast(m){if(tg?.showPopup)tg.showPopup({title:'CoinMine',message:m,buttons:[{type:'ok'}]});else alert(m)}
-function resetData(){localStorage.removeItem(KEY);location.reload()}
-render();if(s.mining){s.started=Date.now();timer=setInterval(tick,10000)}
-</script>
-</body>
-</html>
+*{box-sizing:border-box}
+body{
+margin:0;
+background:radial-gradient(circle at 50% -10%,#087447 0,#03110d 45%);
+font-family:Arial,system-ui,s
