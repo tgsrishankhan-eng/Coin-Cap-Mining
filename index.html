@@ -3,664 +3,250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Coin Cap Mining</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
 margin:0;
-background:#07130b;
-color:white;
 font-family:Arial,sans-serif;
+background:linear-gradient(180deg,#061108,#0a1c0e);
+color:#fff;
+min-height:100vh
 }
 
 .app{
 max-width:480px;
 margin:auto;
-padding:20px 15px 90px;
+padding:18px 16px 100px
+}
+
+.top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:20px
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:10px
 }
 
 .logo{
-width:80px;
-height:80px;
-margin:auto;
-border-radius:50%;
+width:45px;
+height:45px;
+border-radius:14px;
 background:#13c237;
-color:#07130b;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:38px;
+font-size:23px;
 font-weight:bold;
-box-shadow:0 0 25px #13c23755;
+color:#061108;
+box-shadow:0 0 20px #13c23766
 }
 
-header{
-text-align:center;
-padding:10px 0 20px;
+.brand h2{
+font-size:18px;
+margin:0
 }
 
-header h1{
-margin:12px 0 5px;
-font-size:24px;
+.brand span{
+font-size:11px;
+color:#829886
 }
 
-header p{
-color:#8fa895;
+.avatar{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#17351e;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px
+}
+
+.hero{
+background:linear-gradient(145deg,#102a16,#0b1d10);
+border:1px solid #1d4827;
+border-radius:24px;
+padding:22px;
+box-shadow:0 15px 40px #0005;
+position:relative;
+overflow:hidden
+}
+
+.hero:after{
+content:"";
+position:absolute;
+width:150px;
+height:150px;
+right:-70px;
+top:-70px;
+background:#13c237;
+opacity:.08;
+border-radius:50%
+}
+
+.small{
+color:#829886;
+font-size:13px
+}
+
+.balance{
+font-size:38px;
+font-weight:800;
+margin:7px 0;
+color:#39ed65
+}
+
+.coin{
+font-size:12px;
+color:#829886
+}
+
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:18px
+}
+
+.stat{
+background:#08160c;
+border:1px solid #183c21;
+border-radius:14px;
+padding:13px
+}
+
+.stat b{
+display:block;
+font-size:17px;
+margin-top:5px
+}
+
+.mining{
+margin-top:15px;
+background:#0e2514;
+border:1px solid #1b4425;
+border-radius:20px;
+padding:20px
+}
+
+.mining-title{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.mining-title h3{
+margin:0;
+font-size:18px
+}
+
+.live{
+color:#36e963;
+font-size:12px
+}
+
+.circle{
+width:125px;
+height:125px;
+margin:20px auto;
+border-radius:50%;
+border:8px solid #17351e;
+border-top-color:#20d84c;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+box-shadow:0 0 25px #13c23722
+}
+
+.circle strong{
+font-size:23px
+}
+
+.circle span{
+font-size:11px;
+color:#829886
+}
+
+.minebtn{
+width:100%;
+padding:15px;
+border:0;
+border-radius:14px;
+background:#13c237;
+color:#061108;
+font-size:16px;
+font-weight:800;
+cursor:pointer;
+box-shadow:0 8px 20px #13c23733
+}
+
+.minebtn.stop{
+background:#e84b4b;
+color:#fff
+}
+
+.menu{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+margin-top:15px
+}
+
+.menu button{
+background:#0d2113;
+border:1px solid #1b4024;
+border-radius:14px;
+color:#fff;
+padding:12px 4px;
+font-size:11px
+}
+
+.menu button div{
+font-size:20px;
+margin-bottom:5px
+}
+
+.page{
+display:none
+}
+
+.page.active{
+display:block
 }
 
 .card{
 background:#0d2114;
-border:1px solid #21472a;
-border-radius:18px;
+border:1px solid #1b4024;
+border-radius:20px;
 padding:20px;
-margin-top:15px;
+margin-top:15px
 }
 
-.title{
-color:#8fa895;
-font-size:14px;
-}
-
-.balance{
-font-size:36px;
-font-weight:bold;
-color:#31e65d;
-margin:8px 0;
-}
-
-.status{
-text-align:center;
-font-size:18px;
-font-weight:bold;
-margin:10px;
-}
-
-.rate{
-text-align:center;
-color:#8fa895;
-margin-bottom:15px;
-}
-
-button{
-width:100%;
-padding:14px;
-margin-top:10px;
-border:0;
-border-radius:12px;
-background:#13c237;
-color:#061008;
-font-size:16px;
-font-weight:bold;
-}
-
-.stop{
-background:#e64b4b;
-color:white;
-}
-
-.dark{
-background:#18301f;
-color:white;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
+.card h2{
+margin-top:0
 }
 
 input{
 width:100%;
-padding:13px;
-margin-top:10px;
-border-radius:10px;
+padding:14px;
+border-radius:12px;
 border:1px solid #285635;
 background:#07130b;
-color:white;
+color:#fff;
+margin:7px 0;
+outline:none
 }
 
-.page{
-display:none;
-}
-
-.page.active{
-display:block;
-}
-
-.note{
-font-size:13px;
-color:#8fa895;
-line-height:1.6;
-}
-
-.bottom{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-max-width:480px;
-margin:auto;
-background:#0b1b10;
-border-top:1px solid #21472a;
-display:flex;
-justify-content:space-around;
-padding:8px;
-}
-
-.bottom button{
-background:none;
-color:#9db5a3;
-font-size:12px;
-padding:5px;
-margin:0;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-<header>
-
-<div class="logo">C</div>
-
-<h1>COIN CAP MINING</h1>
-
-<p>Mine • Earn • Grow</p>
-
-</header>
-
-
-<!-- HOME -->
-
-<div id="home" class="page active">
-
-<div class="card">
-
-<div class="title">Your Balance</div>
-
-<div id="balance" class="balance">
-0.00
-</div>
-
-<div class="title">
-CCM Coins
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div id="status" class="status">
-Mining Stopped
-</div>
-
-<div class="rate">
-Mining Rate: 12.5 CCM / hour
-</div>
-
-<button id="mineButton" onclick="toggleMining()">
-START MINING
-</button>
-
-<p id="timer" class="note" style="text-align:center;">
-Mining Time: 00:00:00
-</p>
-
-</div>
-
-
-<div class="card">
-
-<div class="grid">
-
-<button onclick="showPage('wallet')">
-💰 Wallet
-</button>
-
-<button onclick="showPage('transfer')">
-📤 Transfer
-</button>
-
-<button onclick="showPage('referral')">
-👥 Referral
-</button>
-
-<button onclick="showPage('profile')">
-👤 Profile
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- WALLET -->
-
-<div id="wallet" class="page">
-
-<div class="card">
-
-<h2>💰 Wallet</h2>
-
-<div id="walletBalance" class="balance">
-0.00
-</div>
-
-<p class="note">
-Available CCM Coins
-</p>
-
-<button onclick="withdraw()">
-WITHDRAW
-</button>
-
-<button class="dark" onclick="showPage('home')">
-← BACK
-</button>
-
-</div>
-
-</div>
-
-
-<!-- TRANSFER -->
-
-<div id="transfer" class="page">
-
-<div class="card">
-
-<h2>📤 Transfer</h2>
-
-<input
-id="receiver"
-placeholder="Telegram User ID"
->
-
-<input
-id="amount"
-type="number"
-placeholder="Amount"
->
-
-<button onclick="transferCoins()">
-SEND COINS
-</button>
-
-<button class="dark" onclick="showPage('home')">
-← BACK
-</button>
-
-</div>
-
-</div>
-
-
-<!-- REFERRAL -->
-
-<div id="referral" class="page">
-
-<div class="card">
-
-<h2>👥 Referral</h2>
-
-<p class="note">
-Invite your friends to Coin Cap Mining.
-</p>
-
-<input
-id="referralLink"
-readonly
-value="Open from Telegram"
->
-
-<button onclick="copyReferral()">
-COPY REFERRAL LINK
-</button>
-
-<button class="dark" onclick="showPage('home')">
-← BACK
-</button>
-
-</div>
-
-</div>
-
-
-<!-- PROFILE -->
-
-<div id="profile" class="page">
-
-<div class="card">
-
-<h2>👤 Profile</h2>
-
-<p class="note">
-Name:
-</p>
-
-<p id="userName">
-Guest
-</p>
-
-<p class="note">
-Telegram ID:
-</p>
-
-<p id="userId">
-Not available
-</p>
-
-<button class="dark" onclick="showPage('home')">
-← BACK
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- BOTTOM -->
-
-<div class="bottom">
-
-<button onclick="showPage('home')">
-🏠<br>Home
-</button>
-
-<button onclick="showPage('wallet')">
-💰<br>Wallet
-</button>
-
-<button onclick="showPage('referral')">
-👥<br>Referral
-</button>
-
-<button onclick="showPage('profile')">
-👤<br>Profile
-</button>
-
-</div>
-
-
-<script>
-
-let balance = 0;
-
-let mining = false;
-
-let miningTimer = null;
-
-let miningSeconds = 0;
-
-const miningRate = 12.5;
-
-
-/* UPDATE BALANCE */
-
-function updateBalance(){
-
-document.getElementById("balance").innerText =
-balance.toFixed(2);
-
-document.getElementById("walletBalance").innerText =
-balance.toFixed(2);
-
-}
-
-
-/* MINING */
-
-function toggleMining(){
-
-if(mining){
-
-mining = false;
-
-clearInterval(miningTimer);
-
-document.getElementById("mineButton").innerText =
-"START MINING";
-
-document.getElementById("mineButton").classList.remove("stop");
-
-document.getElementById("status").innerText =
-"Mining Stopped";
-
-return;
-
-}
-
-
-mining = true;
-
-document.getElementById("mineButton").innerText =
-"STOP MINING";
-
-document.getElementById("mineButton").classList.add("stop");
-
-document.getElementById("status").innerText =
-"⛏ Mining Active";
-
-
-miningTimer = setInterval(function(){
-
-balance += miningRate / 3600;
-
-miningSeconds++;
-
-updateBalance();
-
-updateTimer();
-
-},1000);
-
-}
-
-
-/* TIMER */
-
-function updateTimer(){
-
-let hours =
-Math.floor(miningSeconds / 3600);
-
-let minutes =
-Math.floor((miningSeconds % 3600) / 60);
-
-let seconds =
-miningSeconds % 60;
-
-hours = String(hours).padStart(2,"0");
-
-minutes = String(minutes).padStart(2,"0");
-
-seconds = String(seconds).padStart(2,"0");
-
-document.getElementById("timer").innerText =
-"Mining Time: " +
-hours + ":" +
-minutes + ":" +
-seconds;
-
-}
-
-
-/* PAGE */
-
-function showPage(page){
-
-document.querySelectorAll(".page")
-.forEach(function(item){
-
-item.classList.remove("active");
-
-});
-
-document.getElementById(page)
-.classList.add("active");
-
-}
-
-
-/* TRANSFER */
-
-function transferCoins(){
-
-let receiver =
-document.getElementById("receiver").value;
-
-let amount =
-Number(document.getElementById("amount").value);
-
-
-if(!receiver){
-
-alert("Telegram User ID দিন");
-
-return;
-
-}
-
-
-if(!amount || amount <= 0){
-
-alert("সঠিক Amount দিন");
-
-return;
-
-}
-
-
-if(amount > balance){
-
-alert("আপনার Balance কম");
-
-return;
-
-}
-
-
-balance -= amount;
-
-updateBalance();
-
-alert("Demo transfer successful!");
-
-document.getElementById("receiver").value = "";
-
-document.getElementById("amount").value = "";
-
-}
-
-
-/* WITHDRAW */
-
-function withdraw(){
-
-alert(
-"Withdrawal এখনো চালু হয়নি। Backend connect করার পর চালু হবে।"
-);
-
-}
-
-
-/* REFERRAL */
-
-function copyReferral(){
-
-let input =
-document.getElementById("referralLink");
-
-input.select();
-
-navigator.clipboard.writeText(input.value)
-
-.then(function(){
-
-alert("Referral link copied!");
-
-})
-
-.catch(function(){
-
-alert("Copy করা যায়নি");
-
-});
-
-}
-
-
-/* TELEGRAM USER */
-
-function loadTelegramUser(){
-
-if(
-window.Telegram &&
-window.Telegram.WebApp
-){
-
-let tg =
-window.Telegram.WebApp;
-
-tg.ready();
-
-tg.expand();
-
-let user =
-tg.initDataUnsafe.user;
-
-
-if(user){
-
-let name =
-(user.first_name || "") +
-(user.last_name ?
-" " + user.last_name :
-"");
-
-document.getElementById("userName")
-.innerText =
-name || "Telegram User";
-
-
-document.getElementById("userId")
-.innerText =
-user.id;
-
-
-document.getElementById("referralLink")
-.value =
-"https://t.me/YOUR_BOT_USERNAME?start=" +
-user.id;
-
-}
-
-}
-
-}
-
-
-updateBalance();
-
-loadTelegramUser();
-
-</script>
-
-</body>
-</html>
+.action{
+width
